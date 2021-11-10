@@ -1,0 +1,118 @@
+This file contains a detailed step by step explanation of how to get the server online
+As well as mount it on a url provided by ngrok.
+By the end of the steps, you should be able to load the model's predictions on any device, mobile or web.
+
+*Make sure you have python3 installed on your machine, as well as included in PATH
+*Also make sure you have a good enough text editor(vs code, atom, sublime text, etc)
+
+Step 1: clone the repository into a specific folder (download or "git clone")
+Step 2: open command prompt
+Step 3: navigate to the folder in which you have cloned the repository using the "cd" command
+Step 4: type the command: "cd Heart-Disease-Detection-API" 
+Step 5: enter command: "pip install -r requirements.txt"
+This should install all the required dependencies to run the API. Wait for it to finish
+Step 6: enter command: "python manage.py makemigrations"
+Step 7: enter command: "python manage.py migrate"
+Step 6: and 7 may or may not show an understandable output. Just make sure you dont get any error message
+Step 8: enter command: "python manage.py runserver". 
+This step launches your server. You may have to run this again and agian, when you see errors.
+
+DEBUG for Steps 6,7,8 - there is a possibility of an error message, which looks like: 
+Module <module name> not found. Its probably because you dont have  something that is needed to run the server.
+Google "pip install <module name>" to check which pip commands installs the same, and run that command. 
+Once done, repeat steps 6,7,8
+
+If all goes well, you shoud have an output that looks like: 
+Watching for file changes with StatReloader
+Performing system checks...
+
+System check identified no issues (0 silenced).
+November 10, 2021 - 13:39:58
+Django version 3.2.7, using settings 'model_api.settings'
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CTRL-BREAK.
+
+Your server is now live! 
+
+STOPPING THE SERVER:
+To stop the server anytime, hit ctrl+C on the command prompt till it waits for the next command
+
+Step 9: Test the server. Go to your browser and type in the address bar: "localhost:8000/test/"
+If all has gone well, you should see this on your browser:
+{"success": "model reached"}
+If you check your command prompt, you should see the following line:
+RandomForestClassifier(max_depth=10, n_estimators=500, random_state=24) 
+
+DEBUG for Step 9 - In case you dont see any of this and/or see an error instead, youre missing some more dependencies. 
+Stop the server(as mentioned above) and use the same procedure as the DEBUG for steps 6,7,8, 0minus repeating steps 6,7 and run Step 8 directly. 
+Follow on from step 8 again
+
+Step 10: Test the model. Head back to the browser. Open your dataset, and choose a random row. 
+From that row, take:
+ - age
+ - sex
+ - trestbps
+ - restecg
+ - thalach
+ - target
+AS THEY ARE IN THE DATASET. 
+Enter the following in the address bar: localhost/predict/<age>/<sex>/<trestbps>/<restecg>/<thalach>'
+You should see an output in the format: 
+{"run": "success", "prediction": "<some prediction>", "health": "<normal/abnormal>"}
+The prediction should be matching the target you just noted. 
+If you see this, it means that the model and server are now ready. 
+
+
+
+Its time to latch your server using ngrok.
+
+Step 11: Stop the server. DONT CLOSE THE COMMAND PROMPT. 
+Go to your browser and sign up(with Google, or as per your convinince) for ngrok and download ngrok.
+URL: https://dashboard.ngrok.com/get-started/setup 
+Make sure you use a different command prompt for the next step. 
+\Alternatively, you may install ngrok in the project(the folder containing this text file)
+
+Step 12: Follow the steps for setting up ngrok(there on the same page as the link) till "3. Fire it up". 
+Before we "fire it up", there are some things we need to do
+
+Step 12: in command prompt, type command: "ngrok http 8000"
+You should see something like: 
+
+ngrok by @inconshreveable
+(Ctrl+C to quit)                                                                                                                                          
+Session Status                online
+Account                       <Your email> (Plan: Free)
+Version                       2.3.40     
+Region                        United States (us)      
+Web Interface                 http://127.0.0.1:4040  
+Forwarding                    http://30ea-122-161-74-94.ngrok.io -> http://localhost:8000 
+Forwarding                    https://30ea-122-161-74-94.ngrok.io -> http://localhost:8000
+Connections                   ttl     opn     rt1     rt5     p50     p90 
+                               0       0       0.00    0.00    0.00    0.00                                                                                                                                                             
+
+Note the "Forwarding part" - http://30ea-122-161-74-94.ngrok.io -> http://localhost:8000
+the covering link: http://30ea-122-161-74-94.ngrok.io is important here. 
+Copy the link without the "http://" (in this case - 30ea-122-161-74-94.ngrok.io)   
+
+Step 13: Configure the Django server for ngrok: in the project, open the "settings.py" file in your text editor.
+In ALLOWED_HOSTS (usually seen around line 28), paste the part you copied in Step 12 in the list, in quotes
+
+EXAMPLE: in this case, the code would finally look like:
+ALLOWED_HOSTS = ['30ea-122-161-74-94.ngrok.io']
+
+After pasting, save the changes.  
+
+Step 13: in the command prompt handling the server, run the server (step 8) again.
+
+Step 14: on your browser, go to https://30ea-122-161-74-94.ngrok.io/test/
+
+VIOLA! you should see the same output as you saw in Step 9. 
+
+If you reached here, this means you have successfully mounted the server on your local device
+to a webhook provided by ngrok! 
+try steps 9 and 10 on other devices, but using "https://30ea-122-161-74-94.ngrok.io" instead of "localhost:8000"
+
+Enjoy the API! 
+Hit away!
+
+
