@@ -75,7 +75,7 @@ Make sure you use a different command prompt for the next step.
 Step 12: Follow the steps for setting up ngrok(there on the same page as the link) till "3. Fire it up". 
 Before we "fire it up", there are some things we need to do
 
-Step 12: in command prompt, type command: "ngrok http 8000"
+Step 13: in command prompt, type command: "ngrok http 8000"
 You should see something like: 
 
 ngrok by @inconshreveable
@@ -94,7 +94,7 @@ Note the "Forwarding part" - http://30ea-122-161-74-94.ngrok.io -> http://localh
 the covering link: http://30ea-122-161-74-94.ngrok.io is important here. 
 Copy the link without the "http://" (in this case - 30ea-122-161-74-94.ngrok.io)   
 
-Step 13: Configure the Django server for ngrok: in the project, open the "settings.py" file in your text editor.
+Step 14: Configure the Django server for ngrok: in the project, open the "settings.py" file in your text editor.
 In ALLOWED_HOSTS (usually seen around line 28), paste the part you copied in Step 12 in the list, in quotes
 
 EXAMPLE: in this case, the code would finally look like:
@@ -102,9 +102,9 @@ ALLOWED_HOSTS = ['30ea-122-161-74-94.ngrok.io']
 
 After pasting, save the changes.  
 
-Step 13: in the command prompt handling the server, run the server (step 8) again.
+Step 15: in the command prompt handling the server, run the server (step 8) again.
 
-Step 14: on your browser, go to https://30ea-122-161-74-94.ngrok.io/test/
+Step 16: on your browser, go to https://30ea-122-161-74-94.ngrok.io/test/
 
 VIOLA! you should see the same output as you saw in Step 9. 
 
