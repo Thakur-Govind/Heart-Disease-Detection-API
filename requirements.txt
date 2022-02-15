@@ -4,7 +4,7 @@ Django==3.2.7
 django-heroku==0.3.1
 joblib==1.1.0
 numpy==1.19.5
-pandas==1.0.3
+pandas
 pickle-mixin==1.0.2
 Pillow==7.1.1
 protobuf==3.17.3
