@@ -16,8 +16,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from api import views
+from django.conf.urls.static import static
+from django.conf import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('test/',views.try_get_model,name = "test model"),
     path('predict/<int:age>/<int:sex>/<int:trestbps>/<int:restecg>/<int:thalach>', views.api_hit, name = "api_hit"),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
