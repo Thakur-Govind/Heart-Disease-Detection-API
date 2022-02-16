@@ -8,8 +8,12 @@ import numpy as np
 
 #def train_model():
 def try_get_model(request):
-    model = MlModel.objects.all()[0].model
-    print(pickle.load(model.open()))
+    try:
+        model = MlModel.objects.all()[0].model
+        print("Got by Models:",pickle.load(model.open()))
+    except:
+        model = './media/uploads/finalized_RFC.sav'
+        print("Got by Exception:",pickle.load(open(model,'rb')))
     return JsonResponse({"success":"model reached"})
 
 def transform_data(data):
@@ -17,8 +21,12 @@ def transform_data(data):
 def api_hit(request,age,sex,trestbps,restecg,thalach):
     #filepath = os.path.abspath('finalized_RFC.sav')
     # f = open(filepath)
-    model = MlModel.objects.all()[0].model
-    rfc = pickle.load(model.open())
+    try:
+        model = MlModel.objects.all()[0].model
+        rfc = pickle.load(model.open())
+    except:
+        model = './media/uploads/finalized_RFC.sav'
+        rfc = pickle.load(open(model,'rb'))
     print("Model Loaded Successfully")
     feed = [age,sex,trestbps,restecg,thalach]
     for i in feed:
